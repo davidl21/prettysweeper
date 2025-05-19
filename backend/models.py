@@ -1,4 +1,5 @@
 import random
+from typing import Optional
 
 class Cell:
     def __init__(self, x: int, y: int):
@@ -27,6 +28,7 @@ class Board:
         self.rows = rows
         self.num_mines = num_mines
         self.grid = [[Cell(r, c) for c in range(self.cols)] for r in range(self.rows)]
+        self.offsets = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, -1), (-1, 1)]
 
     def place_mines(self):
         all_positions = []
@@ -44,9 +46,7 @@ class Board:
             self.compute_neighbors(r, c)
 
     def compute_neighbors(self, r: int, c:int) -> None:
-        offsets = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, -1), (-1, 1)]
-
-        for r_offset, c_offset in offsets:
+        for r_offset, c_offset in self.offsets:
             new_r, new_c = r + r_offset, c + c_offset
 
             if self.is_inbound(r, c):
@@ -66,26 +66,51 @@ class Board:
             cell = self.grid[r][c]
 
             if cell.is_revealed:
-                # do nothing, handle later
-                return
+                return []
         
             if cell.is_flagged:
-                # remove flag
-                return
+                cell.toggle_flag()
 
             if cell.is_mine:
                 # end game, reveal all
-                self.reveal_all()
+                revealed_cells = self.reveal_all()
             else:
-                revealed_cells.append(cell)
-                cell.reveal()
-                neighbors = cell.neighbor_mines
+                revealed_cells = self.reveal(r, c) 
 
-
-            return 
+            return revealed_cells 
         else:
             # throw out of bounds error
-            return
+            return []
+
+    def reveal(self, r: int, c: int) -> list[Cell]:
+        if not self.is_inbound(r, c):
+            return []
+            
+        revealed_cells = []
+        stack = [(r, c)]
+        visited = set()
+
+        while stack:  
+            cell_row, cell_col = stack.pop()
+            
+            if (cell_row, cell_col) in visited:
+                continue
+                
+            if not self.is_inbound(cell_row, cell_col):
+                continue
+                
+            cell = self.grid[cell_row][cell_col]
+            cell.reveal()
+            revealed_cells.append(cell)
+            visited.add((cell_row, cell_col))
+
+            if cell.neighbor_mines == 0:
+                for r_offset, c_offset in self.offsets:
+                    new_row = cell_row + r_offset
+                    new_col = cell_col + c_offset
+                    stack.append((new_row, new_col))
+        
+        return revealed_cells
 
     def reveal_all(self):
         # TODO: reveal all cells on game loss
