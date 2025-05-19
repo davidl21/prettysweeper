@@ -62,7 +62,6 @@ class Board:
         revealed_cells = []
 
         if self.is_inbound(r, c):
-            # TODO
             cell = self.grid[r][c]
 
             if cell.is_revealed:
@@ -72,14 +71,12 @@ class Board:
                 cell.toggle_flag()
 
             if cell.is_mine:
-                # end game, reveal all
                 revealed_cells = self.reveal_all()
             else:
                 revealed_cells = self.reveal(r, c) 
 
             return revealed_cells 
         else:
-            # throw out of bounds error
             return []
 
     def reveal(self, r: int, c: int) -> list[Cell]:
