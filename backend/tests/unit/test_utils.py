@@ -49,12 +49,12 @@ class TestReveal:
         revealed = empty_board.reveal(row, col)
         assert revealed == []
 
-    # def test_reveal_visited_cells(self, empty_board):
-    #     """Verify cells aren't revealed multiple times"""
-    #     # First reveal
-    #     first_revealed = empty_board.reveal(0, 0)
-    #     first_coords = {(cell.x, cell.y) for cell in first_revealed}
+    def test_reveal_visited_cells(self, empty_board):
+        """Verify cells aren't revealed multiple times"""
+        # First reveal
+        first_revealed = empty_board.handle_click(0, 0)
+        print(first_revealed)
         
-    #     # Second reveal of already revealed area
-    #     second_revealed = empty_board.reveal(0, 0)
-    #     assert len(second_revealed) == 0
+        # Second reveal of already revealed area
+        second_revealed = empty_board.handle_click(0, 0)
+        assert len(second_revealed) == 0
