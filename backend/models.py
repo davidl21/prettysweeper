@@ -19,7 +19,7 @@ class Cell:
     def set_mine(self):
         self.is_mine = True
 
-    def add_neighbor(self):
+    def increment_neighbor_mine_count(self):
         self.neighbor_mines += 1
 
 class Board:
@@ -53,7 +53,7 @@ class Board:
                 neighbor_cell = self.grid[new_r][new_c]
 
                 if not neighbor_cell.is_mine:
-                    neighbor_cell.add_neighbor() 
+                    neighbor_cell.increment_neighbor_mine_count() 
             else:
                 # throw error
                 return None
