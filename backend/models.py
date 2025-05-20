@@ -73,13 +73,13 @@ class Board:
             if cell.is_mine:
                 revealed_cells = self.reveal_all()
             else:
-                revealed_cells = self.reveal(r, c) 
+                revealed_cells = self.get_revealed_cells(r, c) 
 
             return revealed_cells 
         else:
             return []
 
-    def reveal(self, r: int, c: int) -> list[Cell]:
+    def get_revealed_cells(self, r: int, c: int) -> list[Cell]:
         if not self.is_inbound(r, c):
             return []
             
