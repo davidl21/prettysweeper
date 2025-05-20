@@ -23,12 +23,13 @@ class Cell:
         self.neighbor_mines += 1
 
 class Board:
+    offsets = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, -1), (-1, 1)]
+
     def __init__(self, cols: int, rows: int, num_mines: int):
         self.cols = cols
         self.rows = rows
         self.num_mines = num_mines
         self.grid = [[Cell(r, c) for c in range(self.cols)] for r in range(self.rows)]
-        self.offsets = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, -1), (-1, 1)]
 
     def place_mines(self):
         all_positions = []
