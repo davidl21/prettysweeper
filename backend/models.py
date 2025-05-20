@@ -61,23 +61,20 @@ class Board:
     def handle_click(self, r: int, c:int) -> list[Cell]:
         revealed_cells = []
 
-        if self.is_inbound(r, c):
-            cell = self.grid[r][c]
+        cell = self.grid[r][c]
 
-            if cell.is_revealed:
-                return []
-        
-            if cell.is_flagged:
-                cell.toggle_flag()
-
-            if cell.is_mine:
-                revealed_cells = self.reveal_all()
-            else:
-                revealed_cells = self.get_revealed_cells(r, c) 
-
-            return revealed_cells 
-        else:
+        if cell.is_revealed:
             return []
+    
+        if cell.is_flagged:
+            cell.toggle_flag()
+
+        if cell.is_mine:
+            revealed_cells = self.reveal_all()
+        else:
+            revealed_cells = self.get_revealed_cells(r, c) 
+
+        return revealed_cells 
 
     def get_revealed_cells(self, r: int, c: int) -> list[Cell]:
         if not self.is_inbound(r, c):
