@@ -43,9 +43,9 @@ class Board:
         for r, c in mine_positions:
             mine_cell = self.grid[r][c]
             mine_cell.set_mine()
-            self.compute_neighbors(r, c)
+            self.increment_neighbor_mine_counts(r, c)
 
-    def compute_neighbors(self, r: int, c:int) -> None:
+    def increment_neighbor_mine_counts(self, r: int, c:int) -> None:
         for r_offset, c_offset in self.offsets:
             new_r, new_c = r + r_offset, c + c_offset
 
