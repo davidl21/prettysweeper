@@ -31,12 +31,11 @@ class Board:
         self.num_mines = num_mines
         self.grid = [[Cell(r, c) for c in range(self.cols)] for r in range(self.rows)]
 
-    def place_mines(self):
-        all_positions = []
+    def get_all_positions(self) -> list[tuple[int, int]]:
+        return [(r, c) for r in range(self.rows) for c in range(self.cols)]
 
-        for r in range(self.rows):
-            for c in range(self.cols):
-                all_positions.append((r, c))
+    def place_mines(self) -> None:
+        all_positions = self.get_all_positions()
 
         mine_positions = random.sample(all_positions, self.num_mines)
         self.mine_positions = mine_positions
